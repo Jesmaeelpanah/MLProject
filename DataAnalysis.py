@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 class DataAnalysis(object):
     """ This is a class used for data analysis.
     """

@@ -1,15 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sb
-
-from matplotlib import offsetbox
 from sklearn import manifold, datasets, decomposition, discriminant_analysis
 
 
 class DimensionalityReduction(object):
     """ This class contains functions that can be used for dimensionality reduction purposes
-
     """
 
     def __init__(self):
@@ -17,6 +12,7 @@ class DimensionalityReduction(object):
         self.x = self.digits.data
         self.y = self.digits.target
         self.n_samples, self.n_feature = self.x.shape
+        print(self.n_samples, self.n_feature)
 
     def embedding_plot(self, x, title):
         x_min, x_max = np.min(x, axis=0), np.max(x, axis=0)
@@ -27,24 +23,47 @@ class DimensionalityReduction(object):
         sc = ax.scatter(x[:, 0], x[:, 1], lw=0, s=40, c=self.y / 10)
 
         shown_images = np.array([1., 1.])
-        print(np.min((x[0] - shown_images) ** 2))
-
+        '''
         for i in range(x.shape[0]):
-          #  if np.min(np.sum((x[i] - shown_images) ** 2, axis=1)) < 1e-2:
-          #      continue
+            if np.min(np.sum(np.power(x[i] - shown_images, 2), axis=0)) < 1e-2:
+                continue
             shown_images = np.r_[shown_images, x[i]]
             ax.add_artist(offsetbox.AnnotationBbox(
                 offsetbox.OffsetImage(self.digits.images[i], cmap=plt.cm.gray_r),
                 x[i]))
-
+        '''
         plt.xticks([]), plt.yticks([])
         plt.title(title)
 
-    def reduction_analysis(self):
-        print(self.n_samples, self.n_feature)
+    def PCA(self):
+        """ Principle Component Analysis Method
+        :return:
+        """
         x_pca = decomposition.PCA(n_components=2).fit_transform(self.x)
         self.embedding_plot(x_pca, 'PCA')
         plt.show()
 
+    def LDA(self):
+        """Linear Discrement Analysis
+        :return:
+        """
+        x_lda = discriminant_analysis.LinearDiscriminantAnalysis(n_components=2).fit_transform(self.x, self.y)
+        self.embedding_plot(x_lda, "LDA")
+        plt.show()
 
+    def TSNE(self):
+        """ T-distributed neighbour embedding
+        :return:
+        """
+        x_tsne = manifold.TSNE(n_components=2).fit_transform(self.x)
+        self.embedding_plot(x_tsne, "TSNE")
+        plt.show()
 
+    def PCA_TSNE(self):
+        """ Run PCA first and then apply T-distributed neighbour embedding
+        :return:
+        """
+        x_pca = decomposition.PCA(n_components=2).fit_transform(self.x)
+        x_tsne = manifold.TSNE(n_components=2).fit_transform(x_pca)
+        self.embedding_plot(x_tsne, "PCA_TSNE")
+        plt.show()
