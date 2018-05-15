@@ -15,6 +15,11 @@ class DimensionalityReduction(object):
         print(self.n_samples, self.n_feature)
 
     def embedding_plot(self, x, title):
+        """ Plots the reduced array of x with a given title
+        :param x: 2D array of modified parameters
+        :param title: title of the graph
+        :return:
+        """
         x_min, x_max = np.min(x, axis=0), np.max(x, axis=0)
         x = (x - x_min) / (x_max - x_min)
 

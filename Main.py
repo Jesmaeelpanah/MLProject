@@ -17,3 +17,4 @@ data.open_files("Xvar.csv", "Yvar.csv")
 #reduction.PCA_TSNE()
 
 linear_reg = LR.LinearRegression()
+linear_reg.linear_reg()
