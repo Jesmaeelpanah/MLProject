@@ -1,0 +1,68 @@
+import os
+import logging
+import numpy as np
+import tensorflow as tf
+import matplotlib.font_manager
+import matplotlib.pyplot as plt
+from datetime import datetime
+from sklearn import linear_model, datasets
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Just disables the warning, doesn't enable AVX/FMA
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+class NueralNet(object):
+    """ This class contains functions for creating neuralnet structure
+    """
+
+    def __init__(self):
+        """ initializer
+        """
+        logging.info('Nueral Network Initializer...')
+
+        # load sample data from sklearn
+        self.diabetes = datasets.load_diabetes(return_X_y=True)
+
+        # extract x and y
+        self.x, self.y = self.diabetes
+        self.x = np.asarray(self.x, dtype=np.float)
+        self.y = np.asarray(self.y, dtype=np.float)
+
+        # randomly pick training and test sets
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.x, self.y,
+                                                                                test_size=0.2, random_state=42)
+        # Defines the no of samples, features and batch size
+        self.n_samples, self.n_features = self.diabetes[0].shape
+        self.batch_size = 1000
+
+
+        # Select hyperparameters and applicable methods
+        optimizers = ["Adam", "GradientDescent"]
+        loss_func = ["LSq", "MSq"]
+        activation_func = ["N/A", "relu", "relu6", "sigmoid"]
+
+        self.hidden_layers = 4                    # No of hidden layers
+        self.nodes = [4, 5, 5, 2]                 # No of nodes per layer
+
+        self.loss_func = loss_func[0]             # Loss function
+        self.activation_func = activation_func[0] # Activation function (could be different for each node)
+
+        self.optimizer = optimizers[0]
+        self.optimizer_learning_rate = 0.5        # Optimizer Learning Rate
+        self.optimizer_epsilon = 1e-8             # Optimizer Error
+        self.iterations = 1000                    # Session run iteration
+
+        self.simulation_name = "l(" + (','.join(str(x) for x in self.nodes)) + ")=" + self.hidden_layers + \
+                               "_op=" + self.optimizer + "_lr=" + \
+                               str(self.optimizer_learning_rate) + \
+                               "_ep=" + str(self.optimizer_epsilon) + \
+                               "_lf=" + self.loss_func + \
+                               "_af=" + self.activation_func + \
+                               "_itr=" + str(self.iterations) + \
+                               "_batch=" + str(self.batch_size)
+
+
+        # plt.scatter(self.x_train, self.y_train)
+        # plt.show()
+

@@ -1,0 +1,2 @@
+2018/06/14 08:05:19 AM - root - INFO - Started
+2018/06/14 08:05:21 AM - matplotlib.font_manager - DEBUG - findfont: Matching :family=sans-serif:style=normal:variant=normal:weight=normal:stretch=normal:size=12.0 to DejaVu Sans ('C:\\Users\\jen\\PycharmProjects\\ML\\venv\\lib\\site-packages\\matplotlib\\mpl-data\\fonts\\ttf\\DejaVuSans.ttf') with score of 0.050000
